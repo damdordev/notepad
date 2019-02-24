@@ -7,10 +7,19 @@ import java.util.Calendar;
  */
 public class Note {
 
+    private int mId;
     private String mTitle;
     private String mContent;
     private Calendar mCreateTime;
     private Calendar mLastUpdateTime;
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
 
     public String getTitle() {
         return mTitle;

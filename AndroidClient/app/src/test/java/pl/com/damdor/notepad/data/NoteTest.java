@@ -12,6 +12,14 @@ import static org.junit.Assert.*;
 public class NoteTest {
 
     @Test
+    public void testId(){
+        Note note = new Note();
+
+        note.setId(5);
+        assertEquals(5, note.getId());
+    }
+
+    @Test
     public void testTitle() {
         Note note = new Note();
 
