@@ -1,24 +1,20 @@
 package pl.com.damdor.notepad.data;
 
-import java.util.Calendar;
-import java.util.Objects;
-
 /**
  * Created by Damian Doroba on 2019-02-24.
  */
 public class Note implements Cloneable {
+    public static final long UNINITIALIZED_ID = 0;
 
-    private int mId;
+    private long mId = UNINITIALIZED_ID;
     private String mTitle = "";
     private String mContent = "";
-    private Calendar mCreateTime = Calendar.getInstance();
-    private Calendar mLastUpdateTime = Calendar.getInstance();
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
     }
 
@@ -38,22 +34,6 @@ public class Note implements Cloneable {
         mContent = content;
     }
 
-    public Calendar getCreateTime() {
-        return mCreateTime;
-    }
-
-    public void setCreateTime(Calendar createTime) {
-        mCreateTime = createTime;
-    }
-
-    public Calendar getLastUpdateTime() {
-        return mLastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Calendar lastUpdateTime) {
-        mLastUpdateTime = lastUpdateTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,18 +43,14 @@ public class Note implements Cloneable {
 
         if (mId != note.mId) return false;
         if (!mTitle.equals(note.mTitle)) return false;
-        if (!mContent.equals(note.mContent)) return false;
-        if (!mCreateTime.equals(note.mCreateTime)) return false;
-        return mLastUpdateTime.equals(note.mLastUpdateTime);
+        return mContent.equals(note.mContent);
     }
 
     @Override
     public int hashCode() {
-        int result = mId;
+        int result = (int) mId;
         result = 31 * result + mTitle.hashCode();
         result = 31 * result + mContent.hashCode();
-        result = 31 * result + mCreateTime.hashCode();
-        result = 31 * result + mLastUpdateTime.hashCode();
         return result;
     }
 

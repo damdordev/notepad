@@ -9,16 +9,16 @@ import pl.com.damdor.notepad.data.Note;
  */
 public interface NoteRepository {
 
-    public interface NoteLoadListener {
+    interface NoteLoadListener {
         void onNotesLoaded(List<Note> notes);
     }
 
-    public interface NoteUpdateListener {
-        void onNoteUpdated(boolean isNewNote, Note note);
+    interface NoteUpdateListener {
+        void onNoteUpdated(long id);
     }
 
-    public interface NoteDeleteListener {
-        void onNoteDeleted(Note deletedNote);
+    interface NoteDeleteListener {
+        void onNoteDeleted();
     }
 
     void load(NoteLoadListener listener);
