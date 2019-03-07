@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.List;
 
 import pl.com.damdor.notepad.data.Note;
-import pl.com.damdor.notepad.storage.NoteRepository;
 import pl.com.damdor.notepad.testutils.AsynchronousTestListener;
 
 import static org.junit.Assert.*;
@@ -16,7 +15,14 @@ import static org.junit.Assert.*;
  */
 public abstract class NoteRepositoryTest {
 
-    protected class TestNoteLoadListener extends AsynchronousTestListener<List<Note>> implements NoteRepository.NoteLoadListener {
+    private static class TestNoteDeleteListener extends AsynchronousTestListener<Boolean> implements NoteRepository.NoteDeleteListener {
+        @Override
+        public void onNoteDeleted() {
+            setupResult(true);
+        }
+    }
+
+    private static class TestNoteLoadListener extends AsynchronousTestListener<List<Note>> implements NoteRepository.NoteLoadListener {
 
         @Override
         public void onNotesLoaded(List<Note> notes) {
@@ -24,7 +30,7 @@ public abstract class NoteRepositoryTest {
         }
     }
 
-    protected class TestNoteUpdateListener extends AsynchronousTestListener<Pair<Boolean, Long>> implements NoteRepository.NoteUpdateListener {
+    private static class TestNoteUpdateListener extends AsynchronousTestListener<Pair<Boolean, Long>> implements NoteRepository.NoteUpdateListener {
 
         @SuppressWarnings("WeakerAccess")
         public TestNoteUpdateListener(){
@@ -37,53 +43,11 @@ public abstract class NoteRepositoryTest {
         }
     }
 
-    protected class TestNoteDeleteListener extends AsynchronousTestListener<Boolean> implements NoteRepository.NoteDeleteListener {
-        @Override
-        public void onNoteDeleted() {
-            setupResult(true);
-        }
-    }
-
     protected abstract NoteRepository createEmptyRepository();
+    protected float getTimeout() { return 100.0f; }
 
     protected void makeChangeInNote(Note note){
         note.setTitle(note.getTitle() + "_change");
-    }
-
-    protected List<Note> load(NoteRepository repository) throws InterruptedException {
-        TestNoteLoadListener listener = new TestNoteLoadListener();
-        repository.load(listener);
-        //noinspection SynchronizationOnLocalVariableOrMethodParameter
-        synchronized (listener){
-            listener.wait(100);
-        }
-        return listener.getResult();
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    protected Pair<Boolean, Long> update(NoteRepository repository, Note note) throws InterruptedException {
-        TestNoteUpdateListener listener = new TestNoteUpdateListener();
-
-        repository.update(note, listener);
-        //noinspection SynchronizationOnLocalVariableOrMethodParameter
-        synchronized (listener){
-            listener.wait(100);
-        }
-
-        return listener.getResult();
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    protected boolean delete(NoteRepository repository, int noteId) throws InterruptedException {
-        TestNoteDeleteListener listener = new TestNoteDeleteListener();
-
-        repository.delete(noteId, listener);
-        //noinspection SynchronizationOnLocalVariableOrMethodParameter
-        synchronized (listener){
-            listener.wait(100);
-        }
-
-        return listener.getResult();
     }
 
     @Test
@@ -231,6 +195,33 @@ public abstract class NoteRepositoryTest {
 
         List<Note> notes = load(repository);
         assertEquals(1, notes.size());
+    }
+
+    protected List<Note> load(NoteRepository repository) throws InterruptedException {
+        TestNoteLoadListener listener = new TestNoteLoadListener();
+        repository.load(listener);
+        listener.waitForValue(getTimeout());
+        return listener.getResult();
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    protected Pair<Boolean, Long> update(NoteRepository repository, Note note) throws InterruptedException {
+        TestNoteUpdateListener listener = new TestNoteUpdateListener();
+
+        repository.update(note, listener);
+        listener.waitForValue(getTimeout());
+
+        return listener.getResult();
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    protected boolean delete(NoteRepository repository, int noteId) throws InterruptedException {
+        TestNoteDeleteListener listener = new TestNoteDeleteListener();
+
+        repository.delete(noteId, listener);
+        listener.waitForValue(getTimeout());
+
+        return listener.getResult();
     }
 
 }

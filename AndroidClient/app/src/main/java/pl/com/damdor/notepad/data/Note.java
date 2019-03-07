@@ -63,4 +63,14 @@ public class Note implements Cloneable {
             return null;
         }
     }
+
+    public static Note create(long id, String title, String content){
+        Note note = new Note();
+        note.setId(id);
+        note.setTitle(title);
+        note.setContent(content);
+
+        return note;
+    }
+
 }
