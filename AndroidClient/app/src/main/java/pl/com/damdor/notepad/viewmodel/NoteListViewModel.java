@@ -1,23 +1,44 @@
 package pl.com.damdor.notepad.viewmodel;
 
+import android.content.Context;
+
 import com.annimon.stream.Stream;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.storage.NoteRepository;
 
 /**
  * Created by Damian Doroba on 2019-03-05.
  */
-public class NoteListViewModel {
+public class NoteListViewModel extends ViewModel {
 
+    public static class Factory implements ViewModelProvider.Factory {
+        private NoteRepository mNoteRepository;
+
+        public Factory(NoteRepository noteRepository){
+            mNoteRepository = noteRepository;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            //noinspection unchecked
+            return (T) new NoteListViewModel(mNoteRepository);
+        }
+    }
+
+    @SuppressWarnings("FieldCanBeLocal")
     private NoteRepository mRepository;
     private MutableLiveData<List<Note>> mNote = new MutableLiveData<>();
 
-    public NoteListViewModel(NoteRepository repository){
+    private NoteListViewModel(NoteRepository repository){
         mRepository = repository;
         mRepository.load(this::onAllNotesLoaded);
     }

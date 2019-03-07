@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notepad</string>
+    <string name="sample_title">Sample title</string>
+    <string name="sample_short_content">Sample short content</string>
 </resources>

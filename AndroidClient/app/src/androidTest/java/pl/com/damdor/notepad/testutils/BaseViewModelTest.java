@@ -48,6 +48,7 @@ public class BaseViewModelTest implements LifecycleOwner {
     }
 
     protected void registerObserver(LiveData liveData, Observer observer){
+        //noinspection unchecked
         mInstrumentation.runOnMainSync(() -> liveData.observe(this, observer));
     }
 

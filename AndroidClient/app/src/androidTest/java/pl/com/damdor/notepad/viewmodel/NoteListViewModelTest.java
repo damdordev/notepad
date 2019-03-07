@@ -34,7 +34,6 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Damian Doroba on 2019-03-05.
  */
-@RunWith(AndroidJUnit4.class)
 public class NoteListViewModelTest extends BaseViewModelTest {
 
     private static final List<Note> TEST_NOTES = Arrays.asList(
@@ -52,7 +51,7 @@ public class NoteListViewModelTest extends BaseViewModelTest {
 
     @Test
     public void testGetAllNotes() throws InterruptedException {
-        NoteListViewModel viewModel = new NoteListViewModel(mRepository);
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
         TestObserver<List<Note>> observer = new TestObserver<>();
 
         registerObserver(viewModel.notes(), observer);
