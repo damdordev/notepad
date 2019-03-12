@@ -1,35 +1,18 @@
 package pl.com.damdor.notepad.viewmodel;
 
-import android.app.Instrumentation;
-import android.content.Context;
-
-import junit.framework.TestListener;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.Null;
 
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.Observer;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
 import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.storage.NoteRepository;
 import pl.com.damdor.notepad.storage.list.ListNoteRepository;
 import pl.com.damdor.notepad.testutils.BaseViewModelTest;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by Damian Doroba on 2019-03-05.
@@ -56,7 +39,7 @@ public class NoteListViewModelTest extends BaseViewModelTest {
 
         registerObserver(viewModel.notes(), observer);
         setLifecycleOwnerState(Lifecycle.State.RESUMED);
-        observer.waitForValue(100);
+        observer.waitForValue();
 
         assertEquals(TEST_NOTES, observer.getResult());
     }

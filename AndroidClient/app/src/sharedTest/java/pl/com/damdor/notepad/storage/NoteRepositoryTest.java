@@ -44,7 +44,6 @@ public abstract class NoteRepositoryTest {
     }
 
     protected abstract NoteRepository createEmptyRepository();
-    protected float getTimeout() { return 100.0f; }
 
     protected void makeChangeInNote(Note note){
         note.setTitle(note.getTitle() + "_change");
@@ -200,7 +199,7 @@ public abstract class NoteRepositoryTest {
     protected List<Note> load(NoteRepository repository) throws InterruptedException {
         TestNoteLoadListener listener = new TestNoteLoadListener();
         repository.load(listener);
-        listener.waitForValue(getTimeout());
+        listener.waitForValue();
         return listener.getResult();
     }
 
@@ -209,7 +208,7 @@ public abstract class NoteRepositoryTest {
         TestNoteUpdateListener listener = new TestNoteUpdateListener();
 
         repository.update(note, listener);
-        listener.waitForValue(getTimeout());
+        listener.waitForValue();
 
         return listener.getResult();
     }
@@ -219,7 +218,7 @@ public abstract class NoteRepositoryTest {
         TestNoteDeleteListener listener = new TestNoteDeleteListener();
 
         repository.delete(noteId, listener);
-        listener.waitForValue(getTimeout());
+        listener.waitForValue();
 
         return listener.getResult();
     }

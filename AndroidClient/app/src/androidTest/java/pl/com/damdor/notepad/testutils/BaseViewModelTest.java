@@ -11,7 +11,6 @@ import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.platform.app.InstrumentationRegistry;
-import pl.com.damdor.notepad.storage.list.ListNoteRepository;
 
 /**
  * Created by Damian Doroba on 2019-03-06.
@@ -21,9 +20,8 @@ public class BaseViewModelTest implements LifecycleOwner {
     private LifecycleRegistry mLifecycleRegistry;
     private final Instrumentation mInstrumentation = InstrumentationRegistry.getInstrumentation();
 
+    @SuppressWarnings("WeakerAccess")
     public static class TestObserver<T> extends AsynchronousTestListener<T> implements Observer<T> {
-
-        private T mValue;
 
         @Override
         public void onChanged(T value) {
@@ -43,6 +41,7 @@ public class BaseViewModelTest implements LifecycleOwner {
         return mLifecycleRegistry;
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected void setLifecycleOwnerState(Lifecycle.State state) {
         mInstrumentation.runOnMainSync(() -> mLifecycleRegistry.markState(state));
     }

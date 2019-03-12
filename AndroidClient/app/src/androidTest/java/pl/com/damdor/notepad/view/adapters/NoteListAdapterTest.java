@@ -35,6 +35,7 @@ public class NoteListAdapterTest {
 
     @Test
     public void testView(){
+        @SuppressWarnings("ConstantConditions")
         View view = mAdapter.getView(0, null, null);
 
         TextView titleText = view.findViewById(R.id.item_note_title);

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +20,10 @@ import pl.com.damdor.notepad.data.Note;
  */
 public class NoteListAdapter extends ArrayAdapter<Note> {
     private static class Holder {
-        public final TextView title;
-        public final TextView shortContent;
+        final TextView title;
+        final TextView shortContent;
 
-        public Holder(View view){
+        Holder(View view){
             title = view.findViewById(R.id.item_note_title);
             shortContent = view.findViewById(R.id.item_note_short_content);
         }
@@ -37,7 +38,7 @@ public class NoteListAdapter extends ArrayAdapter<Note> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Note note = getItem(position);
-        Holder holder = null;
+        Holder holder;
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_note, parent, false);
@@ -48,7 +49,7 @@ public class NoteListAdapter extends ArrayAdapter<Note> {
 
         }
 
-        holder.title.setText(note.getTitle());
+        holder.title.setText(Objects.requireNonNull(note).getTitle());
         holder.shortContent.setText(note.getContent());
 
         return convertView;

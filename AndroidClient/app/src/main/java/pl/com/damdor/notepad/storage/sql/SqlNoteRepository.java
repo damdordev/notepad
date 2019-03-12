@@ -20,6 +20,7 @@ public class SqlNoteRepository implements NoteRepository {
         mDatabase = database;
     }
 
+    @SuppressWarnings("unused")
     public SqlNoteRepository(Context context){
         mDatabase = Room
                 .databaseBuilder(context.getApplicationContext(),

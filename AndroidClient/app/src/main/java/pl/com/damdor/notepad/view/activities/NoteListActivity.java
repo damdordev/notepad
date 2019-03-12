@@ -1,7 +1,6 @@
 package pl.com.damdor.notepad.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import pl.com.damdor.notepad.NotepadApplication;
 import pl.com.damdor.notepad.R;

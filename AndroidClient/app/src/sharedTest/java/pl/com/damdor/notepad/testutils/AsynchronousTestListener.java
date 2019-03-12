@@ -14,7 +14,7 @@ public class AsynchronousTestListener<T> {
         }
     }
 
-    public void waitForValue(float timeout) throws InterruptedException {
+    public void waitForValue() throws InterruptedException {
         synchronized (this){
             wait(100);
         }

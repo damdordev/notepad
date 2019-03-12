@@ -1,9 +1,5 @@
 package pl.com.damdor.notepad.viewmodel;
 
-import android.content.Context;
-
-import com.annimon.stream.Stream;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,7 +16,7 @@ import pl.com.damdor.notepad.storage.NoteRepository;
 public class NoteListViewModel extends ViewModel {
 
     public static class Factory implements ViewModelProvider.Factory {
-        private NoteRepository mNoteRepository;
+        private final NoteRepository mNoteRepository;
 
         public Factory(NoteRepository noteRepository){
             mNoteRepository = noteRepository;
@@ -35,8 +31,8 @@ public class NoteListViewModel extends ViewModel {
     }
 
     @SuppressWarnings("FieldCanBeLocal")
-    private NoteRepository mRepository;
-    private MutableLiveData<List<Note>> mNote = new MutableLiveData<>();
+    private final NoteRepository mRepository;
+    private final MutableLiveData<List<Note>> mNote = new MutableLiveData<>();
 
     private NoteListViewModel(NoteRepository repository){
         mRepository = repository;
