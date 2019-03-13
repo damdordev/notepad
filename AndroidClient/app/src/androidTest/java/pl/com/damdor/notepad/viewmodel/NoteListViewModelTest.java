@@ -3,7 +3,6 @@ package pl.com.damdor.notepad.viewmodel;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.lifecycle.Lifecycle;
@@ -11,6 +10,8 @@ import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.storage.NoteRepository;
 import pl.com.damdor.notepad.storage.list.ListNoteRepository;
 import pl.com.damdor.notepad.testutils.BaseViewModelTest;
+import pl.com.damdor.notepad.testutils.TestData;
+import pl.com.damdor.notepad.testutils.TestObserver;
 
 import static org.junit.Assert.*;
 
@@ -19,17 +20,11 @@ import static org.junit.Assert.*;
  */
 public class NoteListViewModelTest extends BaseViewModelTest {
 
-    private static final List<Note> TEST_NOTES = Arrays.asList(
-            Note.create(1, "title1", "content1"),
-            Note.create(2, "title2", "content2"),
-            Note.create(3, "title3", "content3")
-    );
-
     private NoteRepository mRepository;
 
     @Before
     public void setup(){
-        mRepository = new ListNoteRepository(TEST_NOTES);
+        mRepository = new ListNoteRepository(TestData.TEST_NOTES);
     }
 
     @Test
@@ -41,6 +36,21 @@ public class NoteListViewModelTest extends BaseViewModelTest {
         setLifecycleOwnerState(Lifecycle.State.RESUMED);
         observer.waitForValue();
 
-        assertEquals(TEST_NOTES, observer.getResult());
+        assertEquals(TestData.TEST_NOTES, observer.getResult());
     }
+
+    @Test
+    public void testCreateNote() throws InterruptedException {
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
+        TestObserver<Long> observer = new TestObserver<>();
+
+        registerObserver(viewModel.editNoteEvent(), observer);
+        setLifecycleOwnerState(Lifecycle.State.RESUMED);
+        viewModel.createNote();
+        observer.waitForValue();
+
+        assertTrue(observer.hasResult());
+        assertEquals(Note.UNINITIALIZED_ID, (long) observer.getResult());
+    }
+
 }

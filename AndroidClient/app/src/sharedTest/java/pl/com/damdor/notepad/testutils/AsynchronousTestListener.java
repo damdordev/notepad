@@ -6,9 +6,11 @@ package pl.com.damdor.notepad.testutils;
 public class AsynchronousTestListener<T> {
 
     private T mResult;
+    private boolean mHasResult;
 
     protected void setupResult(T result){
         mResult = result;
+        mHasResult = true;
         synchronized (this){
             notifyAll();
         }
@@ -18,6 +20,10 @@ public class AsynchronousTestListener<T> {
         synchronized (this){
             wait(100);
         }
+    }
+
+    public boolean hasResult(){
+        return mHasResult;
     }
 
     public T getResult() {

@@ -15,6 +15,7 @@
     </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/activity_note_list_add_note_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"

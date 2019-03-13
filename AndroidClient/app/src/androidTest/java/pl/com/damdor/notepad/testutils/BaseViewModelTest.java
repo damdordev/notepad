@@ -20,16 +20,6 @@ public class BaseViewModelTest implements LifecycleOwner {
     private LifecycleRegistry mLifecycleRegistry;
     private final Instrumentation mInstrumentation = InstrumentationRegistry.getInstrumentation();
 
-    @SuppressWarnings("WeakerAccess")
-    public static class TestObserver<T> extends AsynchronousTestListener<T> implements Observer<T> {
-
-        @Override
-        public void onChanged(T value) {
-            setupResult(value);
-        }
-
-    }
-
     @Before
     public void setupBaseViewModelTest(){
         mLifecycleRegistry = new LifecycleRegistry(this);
