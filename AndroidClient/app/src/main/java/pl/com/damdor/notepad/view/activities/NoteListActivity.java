@@ -11,6 +11,7 @@ import pl.com.damdor.notepad.viewmodel.NoteListViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -41,10 +42,16 @@ public class NoteListActivity extends AppCompatActivity {
         mViewModel.editNoteEvent().observe(this, this::editNote);
 
         mAddNoteButton.setOnClickListener(v -> mViewModel.createNote());
+        mListView.setOnItemClickListener(this::onNoteClicked);
     }
 
     private void onNoteListChanged(List<Note> notes) {
         mListView.setAdapter(new NoteListAdapter(this, notes));
+    }
+
+    private void onNoteClicked(AdapterView<?> adapterView, View view, int position, long l) {
+        Note note = (Note) adapterView.getAdapter().getItem(position);
+        editNote(note.getId());
     }
 
     private void editNote(Long id) {

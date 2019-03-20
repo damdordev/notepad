@@ -6,5 +6,6 @@
     <color name="windowBackground">#333333</color>
     <color name="textColor">#CCCCCC</color>
     <color name="headerTextColor">#ffffff</color>
+    <color name="editTextColor">#ffffff</color>
     <color name="transparent">#00ffffff</color>
 </resources>

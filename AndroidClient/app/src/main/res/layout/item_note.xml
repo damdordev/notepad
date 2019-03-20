@@ -2,15 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:orientation="vertical"
-    android:background="@color/transparent">
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/item_note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/HeaderText"
         android:text="@string/sample_title"
         android:layout_marginLeft="15dp"/>
 
@@ -18,7 +16,6 @@
         android:id="@+id/item_note_short_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/NormalText"
         android:layout_marginLeft="10dp"
         android:text="@string/sample_short_content" />
 </LinearLayout>
