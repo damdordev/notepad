@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.storage.NoteRepository;
 import pl.com.damdor.notepad.utils.SingleLiveEvent;
@@ -14,9 +13,9 @@ import pl.com.damdor.notepad.utils.SingleLiveEvent;
 /**
  * Created by Damian Doroba on 2019-03-05.
  */
-public class NoteListViewModel extends ViewModel {
+public class NoteListViewModel extends NoteRepositoryViewModel {
 
-    public static class Factory extends NoteRepositoryViewModel {
+    public static class Factory extends NoteRepositoryViewModel.Factory {
         public Factory(NoteRepository repository){
             super(repository);
         }
@@ -30,13 +29,12 @@ public class NoteListViewModel extends ViewModel {
     }
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final NoteRepository mRepository;
     private final MutableLiveData<List<Note>> mNote = new MutableLiveData<>();
     private final SingleLiveEvent<Long> mEditNote = new SingleLiveEvent<>();
 
     private NoteListViewModel(NoteRepository repository){
-        mRepository = repository;
-        mRepository.load(this::onAllNotesLoaded);
+        super(repository);
+        getRepository().load(this::onAllNotesLoaded);
     }
 
     private void onAllNotesLoaded(List<Note> notes) {

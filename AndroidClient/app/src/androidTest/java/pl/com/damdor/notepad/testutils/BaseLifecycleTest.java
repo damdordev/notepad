@@ -15,7 +15,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 /**
  * Created by Damian Doroba on 2019-03-06.
  */
-public class BaseViewModelTest implements LifecycleOwner {
+public class BaseLifecycleTest implements LifecycleOwner {
 
     private LifecycleRegistry mLifecycleRegistry;
     private final Instrumentation mInstrumentation = InstrumentationRegistry.getInstrumentation();

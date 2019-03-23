@@ -9,7 +9,7 @@ import androidx.lifecycle.Lifecycle;
 import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.storage.NoteRepository;
 import pl.com.damdor.notepad.storage.list.ListNoteRepository;
-import pl.com.damdor.notepad.testutils.BaseViewModelTest;
+import pl.com.damdor.notepad.testutils.BaseLifecycleTest;
 import pl.com.damdor.notepad.testutils.TestData;
 import pl.com.damdor.notepad.testutils.TestObserver;
 
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Damian Doroba on 2019-03-05.
  */
-public class NoteListViewModelTest extends BaseViewModelTest {
+public class NoteListViewModelTest extends BaseLifecycleTest {
 
     private NoteRepository mRepository;
 

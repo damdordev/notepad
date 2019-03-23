@@ -8,6 +8,10 @@ import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.viewmodel.NoteEditViewModel;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,6 +38,22 @@ public class NoteEditActivity extends AppCompatActivity {
                 .get(NoteEditViewModel.class);
 
         mViewModel.note().observe(this, this::onNoteChanged);
+        mViewModel.closeActivity().observe(this, v -> finish());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.note_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_note_edit_save:
+
+        }
+        return true;
     }
 
     private void onNoteChanged(Note note) {
