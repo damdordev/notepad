@@ -34,6 +34,11 @@ public class NoteListViewModel extends NoteRepositoryViewModel {
 
     private NoteListViewModel(NoteRepository repository){
         super(repository);
+        load();
+    }
+
+    @Override
+    protected void load() {
         getRepository().load(this::onAllNotesLoaded);
     }
 

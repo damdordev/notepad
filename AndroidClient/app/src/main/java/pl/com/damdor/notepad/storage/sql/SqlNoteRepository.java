@@ -7,12 +7,13 @@ import com.annimon.stream.Stream;
 
 import androidx.room.Room;
 import pl.com.damdor.notepad.data.Note;
+import pl.com.damdor.notepad.storage.BaseNoteRepository;
 import pl.com.damdor.notepad.storage.NoteRepository;
 
 /**
  * Created by Damian Doroba on 2019-02-26.
  */
-public class SqlNoteRepository implements NoteRepository {
+public class SqlNoteRepository extends BaseNoteRepository {
 
     private final NoteDatabase mDatabase;
 
@@ -44,6 +45,7 @@ public class SqlNoteRepository implements NoteRepository {
         if(listener != null) {
             listener.onNoteUpdated(id);
         }
+        notifyChanged();
     }
 
     @Override
@@ -52,6 +54,7 @@ public class SqlNoteRepository implements NoteRepository {
         if(listener != null){
             listener.onNoteDeleted();
         }
+        notifyChanged();
     }
 
     private Note convert(NoteData data){

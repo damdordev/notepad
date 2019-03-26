@@ -36,7 +36,10 @@ public abstract class NoteRepositoryViewModel extends ViewModel {
 
     public NoteRepositoryViewModel(NoteRepository repository){
         mRepository = repository;
+        mRepository.register(this::load);
     }
+
+    protected abstract void load();
 
     public NoteRepository getRepository(){
         return mRepository;

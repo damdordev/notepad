@@ -8,6 +8,7 @@ import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.viewmodel.NoteEditViewModel;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ public class NoteEditActivity extends AppCompatActivity {
     private TextView mTitle;
     private TextView mContent;
 
+    private Note mNote;
     private NoteEditViewModel mViewModel;
 
     @Override
@@ -51,13 +53,22 @@ public class NoteEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_note_edit_save:
-
+                mViewModel.save(getModifiedNote());
         }
         return true;
     }
 
     private void onNoteChanged(Note note) {
+        mNote = note;
         mTitle.setText(note.getTitle());
         mContent.setText(note.getContent());
+    }
+
+    private Note getModifiedNote(){
+        Note note = mNote.clone();
+        note.setTitle(mTitle.getText().toString());
+        note.setContent(mContent.getText().toString());
+
+        return note;
     }
 }

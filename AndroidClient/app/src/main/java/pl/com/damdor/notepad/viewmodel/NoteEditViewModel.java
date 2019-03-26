@@ -43,7 +43,12 @@ public class NoteEditViewModel extends NoteRepositoryViewModel {
     public NoteEditViewModel(NoteRepository repository, long id){
         super(repository);
         mId = id;
-        repository.load(this::onAllNotesLoaded);
+        load();
+    }
+
+    @Override
+    protected void load() {
+        getRepository().load(this::onAllNotesLoaded);
     }
 
     public LiveData<Note> note(){
@@ -68,5 +73,6 @@ public class NoteEditViewModel extends NoteRepositoryViewModel {
         }
         mNote.postValue(note);
     }
+
 
 }

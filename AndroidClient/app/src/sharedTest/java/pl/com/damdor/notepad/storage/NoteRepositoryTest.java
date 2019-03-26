@@ -43,6 +43,14 @@ public abstract class NoteRepositoryTest {
         }
     }
 
+    private static class TestChangeListener extends AsynchronousTestListener<Void> implements NoteRepository.ChangeListener {
+
+        @Override
+        public void onChanged() {
+            setupResult(null);
+        }
+    }
+
     protected abstract NoteRepository createEmptyRepository();
 
     protected void makeChangeInNote(Note note){
@@ -194,6 +202,76 @@ public abstract class NoteRepositoryTest {
 
         List<Note> notes = load(repository);
         assertEquals(1, notes.size());
+    }
+
+    @Test
+    public void testIfAddingNoteInformsAboutChanges() throws InterruptedException {
+        NoteRepository repository = createEmptyRepository();
+        TestChangeListener changeListener = new TestChangeListener();
+        repository.register(changeListener);
+
+        Note note = new Note();
+        update(repository, note);
+
+        assertTrue(changeListener.hasResult());
+    }
+
+    @Test
+    public void testIfUpdateNoteInformsAboutChanges() throws InterruptedException {
+        NoteRepository repository = createEmptyRepository();
+
+        Note note = new Note();
+        update(repository, note);
+
+        TestChangeListener changeListener = new TestChangeListener();
+        repository.register(changeListener);
+
+        makeChangeInNote(note);
+        update(repository, note);
+
+        assertTrue(changeListener.hasResult());
+    }
+
+    @Test
+    public void testIfDeleteNoteInformAboutChanges() throws InterruptedException {
+        NoteRepository repository = createEmptyRepository();
+        Note note = new Note();
+        note.setId(5);
+
+        update(repository, note);
+        TestChangeListener changeListener = new TestChangeListener();
+        repository.register(changeListener);
+        delete(repository, 5);
+
+        assertTrue(changeListener.hasResult());
+    }
+
+    @Test
+    public void testIfRepositorySupportsTwoChangeListeners() throws InterruptedException {
+        NoteRepository repository = createEmptyRepository();
+        TestChangeListener changeListener1 = new TestChangeListener();
+        TestChangeListener changeListener2 = new TestChangeListener();
+        repository.register(changeListener1);
+        repository.register(changeListener2);
+
+        Note note = new Note();
+        update(repository, note);
+
+        assertTrue(changeListener1.hasResult());
+        assertTrue(changeListener2.hasResult());
+    }
+
+    @Test
+    public void testIfChangeListenerIsCorrectlyUnregistered() throws InterruptedException {
+        NoteRepository repository = createEmptyRepository();
+        TestChangeListener changeListener = new TestChangeListener();
+        repository.register(changeListener);
+        repository.unregister(changeListener);
+
+        Note note = new Note();
+        update(repository, note);
+
+        assertFalse(changeListener.hasResult());
     }
 
     protected List<Note> load(NoteRepository repository) throws InterruptedException {

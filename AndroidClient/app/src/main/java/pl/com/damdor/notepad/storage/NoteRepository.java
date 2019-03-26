@@ -9,6 +9,10 @@ import pl.com.damdor.notepad.data.Note;
  */
 public interface NoteRepository {
 
+    interface ChangeListener {
+        void onChanged();
+    }
+
     interface NoteLoadListener {
         void onNotesLoaded(List<Note> notes);
     }
@@ -24,4 +28,7 @@ public interface NoteRepository {
     void load(NoteLoadListener listener);
     void update(Note note, NoteUpdateListener listener);
     void delete(int noteId, NoteDeleteListener listener);
+
+    void register(ChangeListener listener);
+    void unregister(ChangeListener listener);
 }

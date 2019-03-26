@@ -7,12 +7,13 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.com.damdor.notepad.data.Note;
+import pl.com.damdor.notepad.storage.BaseNoteRepository;
 import pl.com.damdor.notepad.storage.NoteRepository;
 
 /**
  * Created by Damian Doroba on 2019-02-24.
  */
-public class ListNoteRepository implements NoteRepository {
+public class ListNoteRepository extends BaseNoteRepository {
 
     private final List<Note> mNotes;
 
@@ -41,13 +42,18 @@ public class ListNoteRepository implements NoteRepository {
         if(listener != null) {
             listener.onNoteUpdated(clone.getId());
         }
+
+        notifyChanged();
     }
 
     @Override
     public void delete(int noteId, NoteDeleteListener listener) {
-        deleteIfExist(noteId);
+        boolean wasDeleted = deleteIfExist(noteId);
         if(listener != null){
             listener.onNoteDeleted();
+        }
+        if(wasDeleted){
+            notifyChanged();
         }
     }
 
@@ -55,7 +61,7 @@ public class ListNoteRepository implements NoteRepository {
         return Stream.of(noteList).map(Note::clone).collect(Collectors.toList());
     }
 
-    private void deleteIfExist(long id){
+    private boolean deleteIfExist(long id){
         int index = 0;
         while (index < mNotes.size()){
             if(mNotes.get(index).getId() == id){
@@ -66,8 +72,10 @@ public class ListNoteRepository implements NoteRepository {
 
         if(index < mNotes.size()){
             mNotes.remove(index);
+            return true;
         }
 
+        return false;
     }
 
     private void sortNoteList(){
