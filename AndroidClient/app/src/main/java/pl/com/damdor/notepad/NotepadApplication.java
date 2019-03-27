@@ -21,9 +21,11 @@ public class NotepadApplication extends Application {
         return mNoteRepository;
     }
 
-    @SuppressWarnings("unused")
-    public NotepadApplication() {
-        mNoteRepository = new ListNoteRepository(createStubNoteList());
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //        mNoteRepository = new ListNoteRepository(createStubNoteList());
+        mNoteRepository = new SqlNoteRepository(getApplicationContext());
     }
 
     private List<Note> createStubNoteList(){

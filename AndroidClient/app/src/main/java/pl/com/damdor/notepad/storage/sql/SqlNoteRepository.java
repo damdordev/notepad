@@ -27,6 +27,7 @@ public class SqlNoteRepository extends BaseNoteRepository {
                 .databaseBuilder(context.getApplicationContext(),
                                  NoteDatabase.class,
                                  "notes-database")
+                .allowMainThreadQueries()
                 .build();
     }
 
