@@ -47,7 +47,7 @@ public class ListNoteRepository extends BaseNoteRepository {
     }
 
     @Override
-    public void delete(int noteId, NoteDeleteListener listener) {
+    public void delete(long noteId, NoteDeleteListener listener) {
         boolean wasDeleted = deleteIfExist(noteId);
         if(listener != null){
             listener.onNoteDeleted();

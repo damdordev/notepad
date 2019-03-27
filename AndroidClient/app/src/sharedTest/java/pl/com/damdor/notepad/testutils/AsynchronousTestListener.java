@@ -29,4 +29,9 @@ public class AsynchronousTestListener<T> {
     public T getResult() {
         return mResult;
     }
+
+    public void reset(){
+        mResult = null;
+        mHasResult = false;
+    }
 }

@@ -20,5 +20,5 @@ public interface NoteDAO {
     long insert(NoteData note);
 
     @Query("DELETE from NoteData where id = :id")
-    void delete(int id);
+    void delete(long id);
 }

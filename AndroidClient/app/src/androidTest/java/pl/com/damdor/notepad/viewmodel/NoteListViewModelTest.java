@@ -53,4 +53,19 @@ public class NoteListViewModelTest extends BaseLifecycleTest {
         assertEquals(Note.UNINITIALIZED_ID, (long) observer.getResult());
     }
 
+    @Test
+    public void testDeleteNote() throws InterruptedException {
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
+        TestObserver<List<Note>> observer = new TestObserver<>();
+        registerObserver(viewModel.notes(), observer);
+        setLifecycleOwnerState(Lifecycle.State.RESUMED);
+        observer.waitForValue();
+        observer.reset();
+
+        viewModel.deleteNote(TestData.TEST_NOTES.get(0));
+        observer.waitForValue();
+
+        assertEquals(TestData.TEST_NOTES.size()-1, observer.getResult().size());
+    }
+
 }

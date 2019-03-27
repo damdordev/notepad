@@ -49,7 +49,7 @@ public class SqlNoteRepository extends BaseNoteRepository {
     }
 
     @Override
-    public void delete(int noteId, NoteDeleteListener listener) {
+    public void delete(long noteId, NoteDeleteListener listener) {
         mDatabase.noteDao().delete(noteId);
         if(listener != null){
             listener.onNoteDeleted();

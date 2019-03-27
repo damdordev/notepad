@@ -27,7 +27,7 @@ public interface NoteRepository {
 
     void load(NoteLoadListener listener);
     void update(Note note, NoteUpdateListener listener);
-    void delete(int noteId, NoteDeleteListener listener);
+    void delete(long noteId, NoteDeleteListener listener);
 
     void register(ChangeListener listener);
     void unregister(ChangeListener listener);

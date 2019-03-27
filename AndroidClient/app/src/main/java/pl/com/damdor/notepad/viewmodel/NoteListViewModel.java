@@ -57,4 +57,9 @@ public class NoteListViewModel extends NoteRepositoryViewModel {
     public void createNote(){
         mEditNote.call(Note.UNINITIALIZED_ID);
     }
+
+    public void deleteNote(long id) {
+        startOperation();
+        getRepository().delete(id, () -> finishOperation());
+    }
 }

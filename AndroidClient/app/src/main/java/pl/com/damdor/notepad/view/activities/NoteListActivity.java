@@ -46,7 +46,13 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     private void onNoteListChanged(List<Note> notes) {
-        mListView.setAdapter(new NoteListAdapter(this, notes));
+        mListView.setAdapter(createAdapter(notes));
+    }
+
+    private NoteListAdapter createAdapter(List<Note> notes){
+        NoteListAdapter adapter = new NoteListAdapter(this, notes);
+        adapter.setOnDeleteNoteListener(this::deleteNote);
+        return adapter;
     }
 
     private void onNoteClicked(AdapterView<?> adapterView, View view, int position, long l) {
@@ -58,5 +64,9 @@ public class NoteListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NoteEditActivity.class);
         intent.putExtra(NoteEditActivity.INTENT_KEY_NOTE_ID, id);
         startActivity(intent);
+    }
+
+    private void deleteNote(Note note){
+        mViewModel.deleteNote(note.getId());
     }
 }
