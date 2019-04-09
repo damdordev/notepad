@@ -20,6 +20,7 @@
         android:layout_gravity="bottom|right"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="40dp"
+        android:tint="@color/textColor"
         app:srcCompat="@drawable/ic_plus" />
 
 </FrameLayout>

@@ -42,7 +42,6 @@ public class NoteListActivity extends AppCompatActivity {
         mViewModel.editNoteEvent().observe(this, this::editNote);
 
         mAddNoteButton.setOnClickListener(v -> mViewModel.createNote());
-        mListView.setOnItemClickListener(this::onNoteClicked);
     }
 
     private void onNoteListChanged(List<Note> notes) {
@@ -52,11 +51,11 @@ public class NoteListActivity extends AppCompatActivity {
     private NoteListAdapter createAdapter(List<Note> notes){
         NoteListAdapter adapter = new NoteListAdapter(this, notes);
         adapter.setOnDeleteNoteListener(this::deleteNote);
+        adapter.setOnEditNoteListener(this::onNoteClicked);
         return adapter;
     }
 
-    private void onNoteClicked(AdapterView<?> adapterView, View view, int position, long l) {
-        Note note = (Note) adapterView.getAdapter().getItem(position);
+    private void onNoteClicked(Note note) {
         editNote(note.getId());
     }
 
