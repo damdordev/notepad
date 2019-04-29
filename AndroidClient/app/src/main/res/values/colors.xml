@@ -3,9 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#008577</color>
-    <color name="windowBackground">#333333</color>
+    <color name="windowBackground">#FFFFFF</color>
     <color name="textColor">#CCCCCC</color>
-    <color name="headerTextColor">#ffffff</color>
-    <color name="editTextColor">#ffffff</color>
+    <color name="headerTextColor">#000000</color>
+    <color name="editTextColor">#919191</color>
     <color name="transparent">#00ffffff</color>
+    <color name="noteItemBackground">#FFFFFF</color>
 </resources>

@@ -10,7 +10,11 @@
     <ListView
         android:id="@+id/activity_note_list_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:dividerHeight="3dp">
     </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -28,12 +28,10 @@ public class NoteListAdapter extends ArrayAdapter<Note> {
         private Note mNote;
 
         final TextView title;
-        final TextView shortContent;
         final ImageButton deleteButton;
 
         Holder(View view){
             title = view.findViewById(R.id.item_note_title);
-            shortContent = view.findViewById(R.id.item_note_short_content);
             deleteButton = view.findViewById(R.id.item_note_delete_button);
         }
 
@@ -81,7 +79,6 @@ public class NoteListAdapter extends ArrayAdapter<Note> {
 
         holder.updateModel(note);
         holder.title.setText(Objects.requireNonNull(note).getTitle());
-        holder.shortContent.setText(note.getContent());
 
         return convertView;
     }
