@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notatnik</string>
+    <string name="sample_title">Tytuł</string>
+    <string name="sample_short_content">Treść</string>
+    <string name="content">Treść</string>
+    <string name="title">Tytuł</string>
+    <string name="note_edit_save">Zapisz</string>
+</resources>
