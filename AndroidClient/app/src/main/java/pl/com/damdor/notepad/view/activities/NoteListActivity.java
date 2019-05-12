@@ -10,10 +10,13 @@ import pl.com.damdor.notepad.data.Note;
 import pl.com.damdor.notepad.view.adapters.NoteListAdapter;
 import pl.com.damdor.notepad.viewmodel.NoteListViewModel;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -31,9 +34,9 @@ public class NoteListActivity extends AppCompatActivity {
     private FloatingActionButton mAddNoteButton;
     private ViewGroup mCancelDeletePanel;
     private Button mCancelDeleteButton;
-
-    private Scene mCancelDeleteShownPanel;
-    private Scene mCancelDeleteHiddenPanel;
+    private ViewPropertyAnimator mCurrentAnimator;
+    private boolean mWasAnimationFired = false;
+    private Handler mHidePanelHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +61,7 @@ public class NoteListActivity extends AppCompatActivity {
         mAddNoteButton.setOnClickListener(v -> mViewModel.createNote());
         mCancelDeleteButton.setOnClickListener(v -> mViewModel.cancelDelete());
 
-        mCancelDeleteShownPanel = new Scene(mCancelDeletePanel);
-        mCancelDeletePanel.setTranslationY(mCancelDeletePanel.getHeight()/2);
-        mCancelDeleteHiddenPanel = new Scene(mCancelDeletePanel);
+        mCancelDeletePanel.setTranslationY(mCancelDeletePanel.getHeight());
     }
 
     private void onNoteListChanged(List<Note> notes) {
@@ -85,11 +86,38 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     private void showCancelDeletePanel(){
+        cancelCurrentAnimation();
         mCancelDeletePanel.setVisibility(View.VISIBLE);
+        if(!mWasAnimationFired){
+            mCancelDeletePanel.setTranslationY(mCancelDeletePanel.getHeight());
+            mWasAnimationFired = true;
+        }
+
+        mCurrentAnimator = mCancelDeletePanel
+                .animate()
+                .translationY(0.0f);
+        mCurrentAnimator.start();
+
+        mHidePanelHandler = new Handler();
+        mHidePanelHandler.postDelayed(() -> hideCancelDeletePanel(), 6000);
     }
 
     private void hideCancelDeletePanel(){
-        mCancelDeletePanel.setVisibility(View.INVISIBLE);
+        cancelCurrentAnimation();
+
+        mCurrentAnimator = mCancelDeletePanel
+                .animate()
+                .translationY(mCancelDeletePanel.getHeight())
+                .withEndAction(() -> mCancelDeletePanel.setVisibility(View.INVISIBLE));
+        mCurrentAnimator.start();
+    }
+
+    private void cancelCurrentAnimation(){
+        if(mCurrentAnimator != null){
+            mCurrentAnimator.cancel();
+            mCurrentAnimator = null;
+            mHidePanelHandler.removeCallbacksAndMessages(null);
+        }
     }
 
 }
