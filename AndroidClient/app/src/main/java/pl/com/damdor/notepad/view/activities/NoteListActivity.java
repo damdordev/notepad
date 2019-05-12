@@ -116,7 +116,11 @@ public class NoteListActivity extends AppCompatActivity {
         if(mCurrentAnimator != null){
             mCurrentAnimator.cancel();
             mCurrentAnimator = null;
+        }
+
+        if(mHidePanelHandler != null){
             mHidePanelHandler.removeCallbacksAndMessages(null);
+            mHidePanelHandler = null;
         }
     }
 
