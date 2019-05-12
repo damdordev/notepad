@@ -9,4 +9,5 @@
     <color name="editTextColor">#919191</color>
     <color name="transparent">#00ffffff</color>
     <color name="noteItemBackground">#FFFFFF</color>
+    <color name="cancelDeleteBackground">#CACACA</color>
 </resources>

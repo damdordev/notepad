@@ -6,4 +6,6 @@
     <string name="content">Treść</string>
     <string name="title">Tytuł</string>
     <string name="note_edit_save">Zapisz</string>
+    <string name="note_deleted">Notatka usunięta</string>
+    <string name="cancel">Cofnij</string>
 </resources>

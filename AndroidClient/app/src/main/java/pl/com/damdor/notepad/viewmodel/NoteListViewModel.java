@@ -31,6 +31,10 @@ public class NoteListViewModel extends NoteRepositoryViewModel {
     @SuppressWarnings("FieldCanBeLocal")
     private final MutableLiveData<List<Note>> mNote = new MutableLiveData<>();
     private final SingleLiveEvent<Long> mEditNote = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> mShowCancelDeletePanel = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> mHideCancelDeletePanel = new SingleLiveEvent<>();
+
+    private Note mLastDeletedNote;
 
     private NoteListViewModel(NoteRepository repository){
         super(repository);
@@ -54,12 +58,28 @@ public class NoteListViewModel extends NoteRepositoryViewModel {
         return mEditNote;
     }
 
+    public LiveData<Void> showCancelDeletePanel() { return mShowCancelDeletePanel; }
+
+    public LiveData<Void> hideCancelDeletePanel() { return mHideCancelDeletePanel; }
+
     public void createNote(){
         mEditNote.call(Note.UNINITIALIZED_ID);
     }
 
-    public void deleteNote(long id) {
+    public void deleteNote(Note note) {
+        mLastDeletedNote = note;
         startOperation();
-        getRepository().delete(id, () -> finishOperation());
+        getRepository().delete(note.getId(), () -> finishOperation());
+        mShowCancelDeletePanel.call();
+    }
+
+    public void cancelDelete(){
+        if(mLastDeletedNote == null){
+            return;
+        }
+        startOperation();
+        getRepository().update(mLastDeletedNote, n -> finishOperation());
+        mLastDeletedNote = null;
+        mHideCancelDeletePanel.call();
     }
 }

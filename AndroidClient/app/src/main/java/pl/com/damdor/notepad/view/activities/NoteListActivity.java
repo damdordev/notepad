@@ -2,6 +2,8 @@ package pl.com.damdor.notepad.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.transition.Scene;
+import androidx.transition.TransitionManager;
 import pl.com.damdor.notepad.NotepadApplication;
 import pl.com.damdor.notepad.R;
 import pl.com.damdor.notepad.data.Note;
@@ -11,8 +13,9 @@ import pl.com.damdor.notepad.viewmodel.NoteListViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,16 +26,25 @@ public class NoteListActivity extends AppCompatActivity {
 
     private NoteListViewModel mViewModel;
 
+    private ViewGroup mLayout;
     private ListView mListView;
     private FloatingActionButton mAddNoteButton;
+    private ViewGroup mCancelDeletePanel;
+    private Button mCancelDeleteButton;
+
+    private Scene mCancelDeleteShownPanel;
+    private Scene mCancelDeleteHiddenPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
 
+        mLayout = findViewById(R.id.activity_note_list_layout);
         mListView = findViewById(R.id.activity_note_list_list);
         mAddNoteButton = findViewById(R.id.activity_note_list_add_note_button);
+        mCancelDeletePanel = findViewById(R.id.panel_cancel);
+        mCancelDeleteButton = findViewById(R.id.button_cancel_delete);
 
         mViewModel = ViewModelProviders
                 .of(this, new NoteListViewModel.Factory(NotepadApplication.getRepository()))
@@ -40,8 +52,15 @@ public class NoteListActivity extends AppCompatActivity {
 
         mViewModel.notes().observe(this, this::onNoteListChanged);
         mViewModel.editNoteEvent().observe(this, this::editNote);
+        mViewModel.showCancelDeletePanel().observe(this, v -> showCancelDeletePanel());
+        mViewModel.hideCancelDeletePanel().observe(this, v -> hideCancelDeletePanel());
 
         mAddNoteButton.setOnClickListener(v -> mViewModel.createNote());
+        mCancelDeleteButton.setOnClickListener(v -> mViewModel.cancelDelete());
+
+        mCancelDeleteShownPanel = new Scene(mCancelDeletePanel);
+        mCancelDeletePanel.setTranslationY(mCancelDeletePanel.getHeight()/2);
+        mCancelDeleteHiddenPanel = new Scene(mCancelDeletePanel);
     }
 
     private void onNoteListChanged(List<Note> notes) {
@@ -50,7 +69,7 @@ public class NoteListActivity extends AppCompatActivity {
 
     private NoteListAdapter createAdapter(List<Note> notes){
         NoteListAdapter adapter = new NoteListAdapter(this, notes);
-        adapter.setOnDeleteNoteListener(this::deleteNote);
+        adapter.setOnDeleteNoteListener(mViewModel::deleteNote);
         adapter.setOnEditNoteListener(this::onNoteClicked);
         return adapter;
     }
@@ -65,7 +84,12 @@ public class NoteListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void deleteNote(Note note){
-        mViewModel.deleteNote(note.getId());
+    private void showCancelDeletePanel(){
+        mCancelDeletePanel.setVisibility(View.VISIBLE);
     }
+
+    private void hideCancelDeletePanel(){
+        mCancelDeletePanel.setVisibility(View.INVISIBLE);
+    }
+
 }

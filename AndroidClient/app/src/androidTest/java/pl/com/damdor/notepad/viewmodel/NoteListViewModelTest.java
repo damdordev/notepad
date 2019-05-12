@@ -68,4 +68,62 @@ public class NoteListViewModelTest extends BaseLifecycleTest {
         assertEquals(TestData.TEST_NOTES.size()-1, observer.getResult().size());
     }
 
+    @Test
+    public void testIfDeleteShowsCancelDeletePanel() throws InterruptedException {
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
+        TestObserver<List<Note>> observer = new TestObserver<>();
+        registerObserver(viewModel.notes(), observer);
+        setLifecycleOwnerState(Lifecycle.State.RESUMED);
+        observer.waitForValue();
+        observer.reset();
+
+        TestObserver<Void> showPanelObserver = new TestObserver<>();
+        registerObserver(viewModel.showCancelDeletePanel(), showPanelObserver);
+
+        viewModel.deleteNote(TestData.TEST_NOTES.get(0));
+        showPanelObserver.waitForValue();
+
+        assertTrue(showPanelObserver.hasResult());
+    }
+
+    @Test
+    public void testCancelDelete() throws InterruptedException {
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
+        TestObserver<List<Note>> observer = new TestObserver<>();
+        registerObserver(viewModel.notes(), observer);
+        setLifecycleOwnerState(Lifecycle.State.RESUMED);
+        observer.waitForValue();
+        observer.reset();
+
+        viewModel.deleteNote(TestData.TEST_NOTES.get(0));
+        observer.waitForValue();
+
+        observer.reset();
+        viewModel.cancelDelete();
+        observer.waitForValue();
+
+        assertEquals(TestData.TEST_NOTES.size(), observer.getResult().size());
+    }
+
+    @Test
+    public void testIfCancelDeleteHidesPanel() throws InterruptedException {
+        NoteListViewModel viewModel = new NoteListViewModel.Factory(mRepository).create(NoteListViewModel.class);
+        TestObserver<List<Note>> observer = new TestObserver<>();
+        registerObserver(viewModel.notes(), observer);
+        setLifecycleOwnerState(Lifecycle.State.RESUMED);
+        observer.waitForValue();
+        observer.reset();
+
+        viewModel.deleteNote(TestData.TEST_NOTES.get(0));
+        observer.waitForValue();
+
+        TestObserver<Void> hidePanelObserver = new TestObserver<>();
+        registerObserver(viewModel.hideCancelDeletePanel(), hidePanelObserver);
+
+        viewModel.cancelDelete();
+        hidePanelObserver.waitForValue();
+
+        assertTrue(hidePanelObserver.hasResult());
+    }
+
 }
